@@ -3,6 +3,7 @@ from flask_cors import CORS
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import requests
 
 app = Flask(__name__)
 CORS(app)
@@ -36,6 +37,17 @@ cosine_sim_combined = cosine_similarity(combined_matrix, combined_matrix)
 #     return df.iloc[recommended_movie_indices]
 
 
+
+def fetch_poster(movie_id):
+    url = "https://api.themoviedb.org/3/movie/{}?api_key=c7ec19ffdd3279641fb606d19ceb9bb1&language=en-US".format(
+        movie_id)
+    data = requests.get(url)
+    data = data.json()
+    poster_path = data['poster_path']
+    full_path = "https://image.tmdb.org/t/p/w500/"+poster_path
+    return full_path
+
+
 def recommend_similar_movies(movie_title, num_recommendations=5):
     movie_index = df[df['title'] == movie_title].index[0]
     similar_movies = list(enumerate(cosine_sim_combined[movie_index]))
@@ -45,11 +57,11 @@ def recommend_similar_movies(movie_title, num_recommendations=5):
     
     # Convert the selected rows into a list of dictionaries
     recommended_movies = []
+    recommended_poster = []
     for index in recommended_movie_indices:
         recommended_movies.append(df.iloc[index].to_dict())
-    
-    return recommended_movies
-
+        recommended_poster.append(fetch_poster(df.iloc[index]['id']))
+    return recommended_movies, recommended_poster
 
 @app.route('/api/recommendations', methods=['GET','POST'])
 def get_recommendations():
@@ -60,8 +72,9 @@ def get_recommendations():
     print('ok')
     movie_title = request.json['movie']
     num_recommendations = request.json.get('num_recommendations', 5)
-    recommendations = recommend_similar_movies(movie_title, num_recommendations)
-    return jsonify({'recommendations': recommendations})
+    recommendations, posters = recommend_similar_movies(movie_title, num_recommendations)
+    return jsonify({'recommendations': recommendations, 'posters':posters})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

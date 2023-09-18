@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 
 const Home = () => {
   const [movieTitle, setMovieTitle] = useState("");
   const [recommendations, setRecommendations] = useState([]);
+  const [posters, setPosters] = useState([]);
 
   const handleInputChange = (event) => {
     setMovieTitle(event.target.value);
@@ -29,7 +29,13 @@ const Home = () => {
         return response.json();
       })
       .then((data) => {
-        setRecommendations(data.recommendations);
+        const combinedData = data.recommendations.map(
+          (recommendation, index) => ({
+            recommendation,
+            poster: data.posters[index],
+          })
+        );
+        setRecommendations(combinedData);
       })
       .catch((error) => {
         console.error("Error fetching recommendations:", error.message);
@@ -37,7 +43,7 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center bg-orange-300">
+    <div className="flex flex-col justify-center items-center bg-gray-700">
       <h1>Movie Recommendations</h1>
       <form
         className="flex flex-col items-center justify-center m-5"
@@ -61,9 +67,16 @@ const Home = () => {
       {recommendations.length > 0 && (
         <div>
           <h2>Recommended Movies:</h2>
-          <ul>
+          <ul className="flex justify-center flex-wrap">
             {recommendations.map((movie) => (
-              <li key={movie.title}>{movie.title}</li>
+              <li className="m-5 text-center" key={movie.recommendation.title}>
+                {movie.recommendation.title}
+                <img
+                  className="w-52 rounded-md"
+                  src={movie.poster}
+                  alt={movie.recommendation.title}
+                />
+              </li>
             ))}
           </ul>
         </div>
