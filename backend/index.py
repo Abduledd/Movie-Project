@@ -82,12 +82,22 @@ def get_recommendations():
 @app.route('/api/movie_titles', methods=['GET'])
 def get_movie_titles():
     movie_titles = df['title'].tolist()
-    movies_20_titles = twenty_movies()['id']
-    movies_20_id=[]
-    for id in movies_20_titles :
-        movies_20_id.append({"id":int(id)})
-    return jsonify({'movie_titles': movie_titles, 'movies_20_titles':movies_20_titles, 'movies_20_id':movies_20_id })
+    return jsonify({'movie_titles': movie_titles} )
 
+
+@app.route('/api/random_movies', methods=['GET'])
+def get_random_movies():
+    random_movies_df = twenty_movies()
+    random_movies = []
+    for _, row in random_movies_df.iterrows():
+        movie_id = row['id']
+        movie_title = row['title']
+        poster_url = fetch_poster(movie_id)
+        random_movies.append({
+            'title': movie_title,
+            'poster': poster_url
+        })
+    return jsonify({'random_movies': random_movies})
 
 
 if __name__ == '__main__':

@@ -4,17 +4,24 @@ const Home = () => {
   const [movieTitle, setMovieTitle] = useState("");
   const [recommendations, setRecommendations] = useState([]);
   const [movieTitles, setMovieTitles] = useState([]);
-  const [movies20, setMovies20] = useState([]);
+  const [randomMovies, setRandomMovies] = useState([]);
 
   useEffect(() => {
     // Fetch movie titles from the backend
     fetch("http://127.0.0.1:5000/api/movie_titles")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.movies_20_titles);
         setMovieTitles(data.movie_titles);
       })
       .catch((error) => console.error("Error fetching movie titles:", error));
+
+    // Fetch 20 random movies from the backend
+    fetch("http://127.0.0.1:5000/api/random_movies")
+      .then((response) => response.json())
+      .then((data) => {
+        setRandomMovies(data.random_movies);
+      })
+      .catch((error) => console.error("Error fetching random movies:", error));
   }, []);
 
   const handleInputChange = (event) => {
@@ -56,21 +63,15 @@ const Home = () => {
 
   return (
     <div className="flex flex-col justify-center items-center bg-gray-700">
-      <div></div>
+      <h1 className="text-white text-3xl mb-5">20 random</h1>
 
-      <div>
-        <ul className="flex justify-center flex-wrap">
-          {recommendations.map((movie) => (
-            <li className="m-5 text-center" key={movie.recommendation.title}>
-              {movie.recommendation.title}
-              <img
-                className="w-52 rounded-md"
-                src={movie.poster}
-                alt={movie.recommendation.title}
-              />
-            </li>
-          ))}
-        </ul>
+      <div className="flex overflow-x-auto mb-5 max-w-screen-md">
+        {randomMovies.map((movie, index) => (
+          <div key={index} className="flex-shrink-0 w-48 p-4">
+            <img src={movie.poster} alt={movie.title} className="w-full" />
+            <p className="text-white mt-2 text-center">{movie.title}</p>
+          </div>
+        ))}
       </div>
 
       <h1>Movie Recommendations</h1>
