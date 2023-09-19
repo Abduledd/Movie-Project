@@ -47,6 +47,10 @@ def fetch_poster(movie_id):
     full_path = "https://image.tmdb.org/t/p/w500/"+poster_path
     return full_path
 
+def twenty_movies():
+    df_20 = df.sample(20, random_state=0)[['id','title']]
+    return df_20
+
 
 def recommend_similar_movies(movie_title, num_recommendations=5):
     movie_index = df[df['title'] == movie_title].index[0]
@@ -74,6 +78,16 @@ def get_recommendations():
     num_recommendations = request.json.get('num_recommendations', 5)
     recommendations, posters = recommend_similar_movies(movie_title, num_recommendations)
     return jsonify({'recommendations': recommendations, 'posters':posters})
+
+@app.route('/api/movie_titles', methods=['GET'])
+def get_movie_titles():
+    movie_titles = df['title'].tolist()
+    movies_20_titles = twenty_movies()['id']
+    movies_20_id=[]
+    for id in movies_20_titles :
+        movies_20_id.append({"id":int(id)})
+    return jsonify({'movie_titles': movie_titles, 'movies_20_titles':movies_20_titles, 'movies_20_id':movies_20_id })
+
 
 
 if __name__ == '__main__':

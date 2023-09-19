@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Home = () => {
   const [movieTitle, setMovieTitle] = useState("");
   const [recommendations, setRecommendations] = useState([]);
-  const [posters, setPosters] = useState([]);
+  const [movieTitles, setMovieTitles] = useState([]);
+  const [movies20, setMovies20] = useState([]);
+
+  useEffect(() => {
+    // Fetch movie titles from the backend
+    fetch("http://127.0.0.1:5000/api/movie_titles")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.movies_20_titles);
+        setMovieTitles(data.movie_titles);
+      })
+      .catch((error) => console.error("Error fetching movie titles:", error));
+  }, []);
 
   const handleInputChange = (event) => {
     setMovieTitle(event.target.value);
@@ -44,18 +56,40 @@ const Home = () => {
 
   return (
     <div className="flex flex-col justify-center items-center bg-gray-700">
+      <div></div>
+
+      <div>
+        <ul className="flex justify-center flex-wrap">
+          {recommendations.map((movie) => (
+            <li className="m-5 text-center" key={movie.recommendation.title}>
+              {movie.recommendation.title}
+              <img
+                className="w-52 rounded-md"
+                src={movie.poster}
+                alt={movie.recommendation.title}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+
       <h1>Movie Recommendations</h1>
       <form
         className="flex flex-col items-center justify-center m-5"
         onSubmit={handleSubmit}>
         <label>
           Enter a movie title:
-          <input
+          <select
             className="m-5"
-            type="text"
             value={movieTitle}
-            onChange={handleInputChange}
-          />
+            onChange={handleInputChange}>
+            <option value="">Select a movie</option>
+            {movieTitles.map((title) => (
+              <option key={title} value={title}>
+                {title}
+              </option>
+            ))}
+          </select>
         </label>
         <button
           className="w-52 rounded bg-blue-600 m hover:bg-blue-950 text-white font-sans h-8"
