@@ -62,7 +62,7 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center bg-gray-700">
+    <div className="flex flex-col justify-center items-center bg-gray-950">
       <h1 className="text-white text-3xl mb-5">20 random</h1>
 
       <div className="flex overflow-x-auto mb-5 max-w-screen-md">
@@ -104,7 +104,9 @@ const Home = () => {
           <h2>Recommended Movies:</h2>
           <ul className="flex justify-center flex-wrap">
             {recommendations.map((movie) => (
-              <li className="m-5 text-center" key={movie.recommendation.title}>
+              <li
+                className="m-5 text-center text-white"
+                key={movie.recommendation.title}>
                 {movie.recommendation.title}
                 <img
                   className="w-52 rounded-md"
