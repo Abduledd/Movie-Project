@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
+  Button,
+} from "@material-tailwind/react";
 
 const Home = () => {
   const [movieTitle, setMovieTitle] = useState("");
@@ -16,12 +24,14 @@ const Home = () => {
       .catch((error) => console.error("Error fetching movie titles:", error));
 
     // Fetch 20 random movies from the backend
+    // if (randomMovies == []) {
     fetch("http://127.0.0.1:5000/api/random_movies")
       .then((response) => response.json())
       .then((data) => {
         setRandomMovies(data.random_movies);
       })
       .catch((error) => console.error("Error fetching random movies:", error));
+    // }
   }, []);
 
   const handleInputChange = (event) => {
@@ -62,7 +72,7 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center bg-gray-950">
+    <div className="flex flex-col justify-center items-center bg-blue-gray-600">
       <h1 className="text-white text-3xl mb-5">20 random</h1>
 
       <div className="flex overflow-x-auto mb-5 max-w-screen-md">
@@ -102,20 +112,32 @@ const Home = () => {
       {recommendations.length > 0 && (
         <div>
           <h2>Recommended Movies:</h2>
-          <ul className="flex justify-center flex-wrap">
+          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 text-center ">
             {recommendations.map((movie) => (
-              <li
-                className="m-5 text-center text-white"
+              <div
+                className=" flex items-center mt-6 bg-black p-5 rounded-2xl"
                 key={movie.recommendation.title}>
-                {movie.recommendation.title}
-                <img
-                  className="w-52 rounded-md"
-                  src={movie.poster}
-                  alt={movie.recommendation.title}
-                />
-              </li>
+                <div color="blue-gray" className="m-2">
+                  <img
+                    className="w-36 h-auto max-w-52 rounded-md duration-200 hover:scale-110"
+                    src={movie.poster}
+                    alt={movie.recommendation.title}
+                  />
+                </div>
+                <div className="sm:w-72 ml-5">
+                  <Typography
+                    variant="h5"
+                    color="blue-gray"
+                    className="mb-2 text-red-900">
+                    {movie.recommendation.title}
+                  </Typography>
+                  <Typography className="text-white">
+                    {movie.recommendation.overview}
+                  </Typography>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </div>
