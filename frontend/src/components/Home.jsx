@@ -59,12 +59,12 @@ const Home = () => {
         Movie Recommendations
       </h1>
       <form
-        className="flex flex-col items-center justify-center p-5 m-10 rounded-xl bg-gray-400"
+        className="flex flex-col items-center justify-center p-5 m-10 rounded-xl bg-gray-600"
         onSubmit={handleSubmit}>
         <label className="px-10 flex flex-col">
           Enter a movie title:
           <select
-            className="m-5 w-96"
+            className="m-3 w-96 p-1 rounded bg-gray-900 text-white"
             value={movieTitle}
             onChange={handleInputChange}>
             <option value="">Select a movie</option>
@@ -77,7 +77,7 @@ const Home = () => {
         </label>
 
         <button
-          className="w-52 rounded bg-blue-600 m hover:bg-blue-950 text-white font-sans h-8"
+          className="w-52 mt-5 rounded bg-black hover:bg-gray-800 text-white font-sans h-8"
           type="submit">
           Get Recommendations
         </button>
@@ -85,11 +85,13 @@ const Home = () => {
 
       {recommendations.length > 0 && (
         <div>
-          <h2>Recommended Movies:</h2>
+          <h2 className="p-2 rounded-xl bg-black text-red-900 text-center font-bold">
+            Recommended Movies:
+          </h2>
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 text-center ">
             {recommendations.map((movie) => (
               <div
-                className=" flex items-center mt-6 bg-black p-5 rounded-2xl"
+                className=" flex items-center mt-6 bg-black p-5 rounded-2xl duration-200 hover:scale-105"
                 key={movie.recommendation.title}>
                 <div color="blue-gray" className="m-2">
                   <img

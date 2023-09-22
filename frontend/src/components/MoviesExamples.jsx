@@ -42,9 +42,9 @@ const MoviesExamples = () => {
             <img
               src={movie.poster}
               alt={movie.title}
-              className="h-full w-52 object-cover"
+              className="h-full w-52 object-cover rounded-xl duration-200 hover:scale-95"
             />
-            <p className="text-white mt-3 mb-8 text-center">{movie.title}</p>
+            <p className="text-red-900 mt-3 mb-8 text-center">{movie.title}</p>
           </div>
         ))}
       </Carousel>
