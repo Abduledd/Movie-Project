@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Carousel } from "@material-tailwind/react";
+import { Typography, Select, Option } from "@material-tailwind/react";
 
 const Home = () => {
   const [movieTitle, setMovieTitle] = useState("");
@@ -54,15 +54,17 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center bg-blue-gray-600">
-      <h1>Movie Recommendations</h1>
+    <div className="flex flex-col justify-center items-center pt-20 bg-gray-900">
+      <h1 className="bg-black text-red-900 font-bold rounded-2xl mb-5 p-2 text-center">
+        Movie Recommendations
+      </h1>
       <form
-        className="flex flex-col items-center justify-center m-5"
+        className="flex flex-col items-center justify-center p-5 m-10 rounded-xl bg-gray-400"
         onSubmit={handleSubmit}>
-        <label>
+        <label className="px-10 flex flex-col">
           Enter a movie title:
           <select
-            className="m-5"
+            className="m-5 w-96"
             value={movieTitle}
             onChange={handleInputChange}>
             <option value="">Select a movie</option>
@@ -73,6 +75,7 @@ const Home = () => {
             ))}
           </select>
         </label>
+
         <button
           className="w-52 rounded bg-blue-600 m hover:bg-blue-950 text-white font-sans h-8"
           type="submit">

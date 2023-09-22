@@ -48,7 +48,7 @@ def fetch_poster(movie_id):
     return full_path
 
 def twenty_movies():
-    df_20 = df.sample(20, random_state=0)[['id','title']]
+    df_20 = df.sample(20)[['id','title']]
     return df_20
 
 

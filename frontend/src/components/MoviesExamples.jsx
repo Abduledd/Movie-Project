@@ -14,8 +14,11 @@ const MoviesExamples = () => {
   }, []);
 
   return (
-    <div className="bg-gray-600">
-      <h1 className="text-white text-3xl mb-5">20 random</h1>
+    <div className="bg-gray-900 p-5">
+      <h1 className="bg-black text-red-900 font-bold rounded-2xl mb-5 p-2 text-center">
+        If you're looking to find a movie similar to one you enjoyed, this
+        website is the ideal choice for you.
+      </h1>
 
       <Carousel
         className="rounded-xl"
@@ -41,7 +44,7 @@ const MoviesExamples = () => {
               alt={movie.title}
               className="h-full w-52 object-cover"
             />
-            <p className="text-white mt-2 text-center">{movie.title}</p>
+            <p className="text-white mt-3 mb-8 text-center">{movie.title}</p>
           </div>
         ))}
       </Carousel>
