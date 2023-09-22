@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
+import { Typography, Button, Carousel } from "@material-tailwind/react";
 
 const Home = () => {
   const [movieTitle, setMovieTitle] = useState("");
   const [recommendations, setRecommendations] = useState([]);
   const [movieTitles, setMovieTitles] = useState([]);
-  const [randomMovies, setRandomMovies] = useState([]);
 
   useEffect(() => {
     // Fetch movie titles from the backend
@@ -22,16 +14,6 @@ const Home = () => {
         setMovieTitles(data.movie_titles);
       })
       .catch((error) => console.error("Error fetching movie titles:", error));
-
-    // Fetch 20 random movies from the backend
-    // if (randomMovies == []) {
-    fetch("http://127.0.0.1:5000/api/random_movies")
-      .then((response) => response.json())
-      .then((data) => {
-        setRandomMovies(data.random_movies);
-      })
-      .catch((error) => console.error("Error fetching random movies:", error));
-    // }
   }, []);
 
   const handleInputChange = (event) => {
@@ -73,17 +55,6 @@ const Home = () => {
 
   return (
     <div className="flex flex-col justify-center items-center bg-blue-gray-600">
-      <h1 className="text-white text-3xl mb-5">20 random</h1>
-
-      <div className="flex overflow-x-auto mb-5 max-w-screen-md">
-        {randomMovies.map((movie, index) => (
-          <div key={index} className="flex-shrink-0 w-48 p-4">
-            <img src={movie.poster} alt={movie.title} className="w-full" />
-            <p className="text-white mt-2 text-center">{movie.title}</p>
-          </div>
-        ))}
-      </div>
-
       <h1>Movie Recommendations</h1>
       <form
         className="flex flex-col items-center justify-center m-5"
